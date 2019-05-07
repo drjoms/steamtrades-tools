@@ -1,3 +1,17 @@
+'''    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.'''
+
+
 import requests
 import sys
 
@@ -86,6 +100,51 @@ else:
     want_need_file.write(my_addr)
     want_need_file.close()
 
+def strip_html(html_content):
+    html_content_head_split = html_content.split('</')
+    html_content_head_split = str(html_content_head_split[0])
+    html_content_tail_split = html_content_head_split.split('>')
+    html_content_tail_split = str(html_content_tail_split[-1])
+    #returns string, single game name, supposedly...
+    return html_content_tail_split
+
+def check_steam(input):
+    search_page = 'https://store.steampowered.com/search/?term='
+    search_page = search_page + input
+    page = requests.get(search_page)
+    actual_data = str(page.text)
+    app_page = '<a href="https://store.steampowered.com/app'
+    #<a href="https://store.steampowered.com/app
+    if app_page in actual_data:
+        print('game found in steam database')
+        slice_off_left = actual_data.split('<a href="https://store.steampowered.com/app')
+        slice_off_left = str(slice_off_left[1])
+        slice_off_right=slice_off_left.split('"')
+        slice_off_right=str(slice_off_right[0])
+        first_result=slice_off_right
+        title_page = 'https://store.steampowered.com/app' + first_result
+        title_page= str(title_page)
+        title_content = requests.get(title_page)
+        title_content=title_content.text
+        if '"os_linux":true' in title_content:
+            print('Linux supported game and URL: ',input, title_page)
+
+    else:
+        print('game ', input, 'not found in steam')
+        return 'game not found'
+
+
+def check_for_linux_games():
+    import webbrowser
+
+    list_of_games= he_has.split('\n')
+    #so we got list of games, with HTML tags. gonna strip tags:
+    for x in list_of_games:
+        if '<' in x:
+            check_steam(strip_html(x))
+
+        else:
+            check_steam(x)
 
 if my_addr == '':
     print ('other dude address is empty?')
@@ -102,3 +161,11 @@ games_matched_for_him = other_wants(he_wants, i_have)
 games_matched_for_me = other_wants(he_has, i_want)
 print('games_matched_for_him\n\n', games_matched_for_him,'\n\n')
 print('games_matched_for_me\n\n', games_matched_for_me,'\n\n')
+
+positional_parameter = str(sys.argv[1:])
+#print('pos paremeter is: ', str(positional_parameter))
+#print('type is: ', type(positional_parameter))
+
+#checking other dude's have' collection for linux title
+if 'l' in positional_parameter:
+    check_for_linux_games()
