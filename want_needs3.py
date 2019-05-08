@@ -108,29 +108,30 @@ def strip_html(html_content):
     #returns string, single game name, supposedly...
     return html_content_tail_split
 
+
+
 def check_steam(input):
     search_page = 'https://store.steampowered.com/search/?term='
     search_page = search_page + input
     page = requests.get(search_page)
     actual_data = str(page.text)
     app_page = '<a href="https://store.steampowered.com/app'
-    #<a href="https://store.steampowered.com/app
-    if app_page in actual_data:
+    # <a href="https://store.steampowered.com/app
+    if app_page in actual_data and input != '' and input != ' ':
         print('game found in steam database')
         slice_off_left = actual_data.split('<a href="https://store.steampowered.com/app')
         slice_off_left = str(slice_off_left[1])
-        slice_off_right=slice_off_left.split('"')
-        slice_off_right=str(slice_off_right[0])
-        first_result=slice_off_right
+        slice_off_right = slice_off_left.split('"')
+        slice_off_right = str(slice_off_right[0])
+        first_result = slice_off_right
         title_page = 'https://store.steampowered.com/app' + first_result
-        title_page= str(title_page)
+        title_page = str(title_page)
         title_content = requests.get(title_page)
-        title_content=title_content.text
-        if '"os_linux":true' in title_content:
-            print('Linux supported game and URL: ',input, title_page)
-
+        title_content = title_content.text
+        if '<div class="game_area_sys_req sysreq_content " data-os="linux">' in title_content and input != '' and input != ' ':
+            print('Linux supported game and URL:"', input, '"', title_page)
+        return input
     else:
-        print('game ', input, 'not found in steam')
         return 'game not found'
 
 
