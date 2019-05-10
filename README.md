@@ -7,4 +7,8 @@ then it will ask you for second URL of person who you want to trade with.
 
 first time you insert ypurs - you dont need to insert it again. just hit enter when it akss you for your URL. it is already remembered.
 
-once app finished - you will know if games you want 
+once app finished - you will know which games he has - you want. You will know which games you have - he wants. if any.
+
+Little bonus. if you tun app with: python  appname l
+
+it will try to see if other guy has games on Linux. and tell you which one he has on actual linux. It will give a few false positives very likely. Just look at URL vs name of game.
