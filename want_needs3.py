@@ -68,10 +68,11 @@ def wants_bucket(page_content):
     #print(page_nohead[1])
     #print('page_nohead',page_nohead)
     page_nohead = str(page_nohead[1])
-    page_notail = page_nohead.split('</div><div class="markdown">')
+    page_notail = page_nohead.split('</div>')
     page_notail = str(page_notail[0])
     #returns string
    # print('list of games user wants:',page_notail)
+    #print(page_notail)
     return (page_notail)
 
 def other_wants(user_has, other_user_wants):
@@ -160,8 +161,11 @@ he_wants=wants_bucket(content_extract(other_user_addr))#returns string
 
 games_matched_for_him = other_wants(he_wants, i_have)
 games_matched_for_me = other_wants(he_has, i_want)
-print('games_matched_for_him\n\n', games_matched_for_him,'\n\n')
-print('games_matched_for_me\n\n', games_matched_for_me,'\n\n')
+#print('games_matched_for_him\n\n', str(games_matched_for_him),'\n\n')
+#print('games_matched_for_me\n\n', str(games_matched_for_me),'\n\n')
+
+print('I have those games you want', str(games_matched_for_him),'\n\n')
+print('I want that:', str(games_matched_for_me),'\n\nLets have an exchange? State your offer, please.')
 
 positional_parameter = str(sys.argv[1:])
 #print('pos paremeter is: ', str(positional_parameter))
