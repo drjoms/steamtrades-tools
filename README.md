@@ -4,7 +4,7 @@ basicaly, you ned to install python and run this app in command prompt/console.
 
 to run it you need to install python(its free, google it, common tool, if you are on linux/mac most likely you already have it)
 
-then go to directory where the file want_needs3.py is in console/command prompt.
+then go to directory where the file  want_needs_working.py is in console/command prompt.
 
 type in: python want_needs3.py
 
